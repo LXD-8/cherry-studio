@@ -785,6 +785,25 @@ describe('AgentChat artifact pane', () => {
     expect(screen.queryByRole('button', { name: 'Open inline diagnostic draft' })).not.toBeInTheDocument()
   })
 
+  it('opens Assistant diagnostic drafts from inline result actions', async () => {
+    const user = userEvent.setup()
+    const assistantBootstrap = createConversationBootstrap()
+    assistantBootstrap.resources.agent = {
+      id: 'agent-1',
+      model: 'provider::model-1',
+      configuration: { builtin_role: BUILTIN_AGENT_ROLE.ASSISTANT }
+    } as unknown as typeof assistantBootstrap.resources.agent
+    assistantBootstrap.resources.model = undefined
+
+    renderAgentChat({ conversationBootstrap: assistantBootstrap })
+
+    await user.click(screen.getByRole('button', { name: 'Open inline diagnostic draft' }))
+    expect(showDoctorMock).toHaveBeenCalledWith({
+      initialPanel: 'report',
+      initialDescription: 'Inline draft from this message'
+    })
+  })
+
   it('preserves message subtree state while Support capability resolves', async () => {
     const user = userEvent.setup()
     const loadingBootstrap = createConversationBootstrap()
