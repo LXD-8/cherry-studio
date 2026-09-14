@@ -143,7 +143,6 @@ const translations: Record<string, string> = {
   'settings.doctor.messages.relaunch_required': 'Restart Cherry Studio to apply the repair.',
   'settings.doctor.status.fail': 'Failed',
   'settings.doctor.status.pass': 'Passed',
-  'settings.doctor.summary.problems': '{{count}} items need attention',
   'settings.doctor.summary.progress': '{{completed}} of {{total}} completed',
   'settings.doctor.stale.description': 'This diagnostic result is out of date.',
   'settings.doctor.title': 'System diagnostics'

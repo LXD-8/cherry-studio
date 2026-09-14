@@ -26,7 +26,6 @@ vi.mock('react-i18next', () => ({
       if (key === 'settings.doctor.fixes.restart_mcp_generic') return 'Restart MCP service'
       if (key === 'error.diagnostics.checking_progress') return `Checking: ${params?.check}`
       if (key === 'settings.doctor.summary.needs_attention') return `Needs attention: ${params?.count}`
-      if (key === 'settings.doctor.summary.problems') return `${params?.count} items need attention`
       if (key === 'settings.doctor.summary.fixed') return `Fixed: ${params?.count}`
       return key
     }
@@ -284,7 +283,8 @@ describe('DoctorCheckAccordionItems interactions', () => {
     const view = render(<DoctorChecksPanel controller={{ ...controller, viewModel }} />)
 
     expect(screen.getByText('Needs attention: 1')).toBeVisible()
-    expect(screen.getByText('1 items need attention')).toBeVisible()
+    expect(screen.queryByText('Fixed: 0')).not.toBeInTheDocument()
+    expect(screen.queryByText('settings.doctor.summary.problems')).not.toBeInTheDocument()
     const findings = screen.getByRole('region', { name: 'error.diagnostics.action_required' })
     expect(
       within(findings).getByRole('button', { name: /settings\.doctor\.checks\.runtime-claude-login\.title/ })
@@ -316,6 +316,7 @@ describe('DoctorCheckAccordionItems interactions', () => {
     )
 
     expect(screen.getByText('Fixed: 1')).toBeVisible()
+    expect(screen.getByText('Fixed: 1')).toHaveClass('text-success')
     expect(screen.getByText('Needs attention: 0')).toBeVisible()
     expect(screen.getByText('settings.doctor.summary.basic_healthy')).toBeVisible()
     expect(screen.queryByRole('region', { name: 'error.diagnostics.action_required' })).not.toBeInTheDocument()
